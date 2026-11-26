@@ -1,0 +1,19 @@
+{
+  "name": "maimai-song-quiz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "舞萌听歌大作战 — maimai listening quiz with a SQLite / Cloudflare D1-ready global leaderboard",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node server.mjs --port 8130",
+    "sync": "node tools/sync-data.mjs",
+    "build:cf": "node tools/build-cf.mjs"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "dependencies": {
+    "ws": "^8.23.0"
+  }
+}

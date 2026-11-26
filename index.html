@@ -1,0 +1,1205 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#fdf4f9" />
+  <title>舞萌听歌大作战 · maimai Song Quiz</title>
+  <meta name="description" content="从 1,294 首舞萌 DX 曲目中随机截取片段，听歌识曲。四种玩法、随机裁切、本地排行榜。" />
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://assets2.lxns.net" crossorigin />
+  <link rel="preload" href="assets/fonts/Torus-SemiBold.otf" as="font" type="font/otf" crossorigin />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-ring" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="34 9" />
+      <circle cx="12" cy="12" r="3.1" fill="none" stroke="currentColor" stroke-width="2.2" />
+    </symbol>
+    <symbol id="i-target" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+      <circle cx="12" cy="12" r="4.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+      <path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24">
+      <path d="M12 20.2 4.9 13a4.7 4.7 0 0 1 0-6.7 4.8 4.8 0 0 1 6.8 0l.3.3.3-.3a4.8 4.8 0 0 1 6.8 0 4.7 4.7 0 0 1 0 6.7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+      <path d="M7.6 12.2h2.2l1.3-2.4 2 4.4 1.3-2.5h2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-tags" viewBox="0 0 24 24">
+      <path d="M4 4.5h6.3l9.2 9.2a1.8 1.8 0 0 1 0 2.6l-3.2 3.2a1.8 1.8 0 0 1-2.6 0L4.5 10.3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+      <circle cx="8.1" cy="8.1" r="1.35" fill="currentColor" />
+      <path d="m13.2 10.6 4.4 4.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-bracket" viewBox="0 0 24 24">
+      <path d="M3.5 5h4v5h4M3.5 19h4v-5h4M20.5 12h-5M20.5 12l-2.8-2.8M20.5 12l-2.8 2.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx="20" cy="12" r="1.7" fill="currentColor" />
+      <path d="M11.5 10v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24">
+      <path d="M8.2 5.4 19 12 8.2 18.6Z" fill="currentColor" />
+    </symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24">
+      <rect x="7" y="5" width="3.6" height="14" rx="1.2" fill="currentColor" />
+      <rect x="13.4" y="5" width="3.6" height="14" rx="1.2" fill="currentColor" />
+    </symbol>
+    <symbol id="i-replay" viewBox="0 0 24 24">
+      <path d="M4.5 12a7.5 7.5 0 1 0 2.3-5.4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+      <path d="M4.2 4.2v4.7h4.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24">
+      <path d="M4 9.2h3.2L12 5.3v13.4l-4.8-3.9H4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+      <path d="M15.6 8.5a5 5 0 0 1 0 7M18.3 6a8 8 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24">
+      <path d="M4 9.2h3.2L12 5.3v13.4l-4.8-3.9H4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+      <path d="m15.5 9.5 5 5M20.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+      <path d="M12 2.6v2.3M12 19.1v2.3M2.6 12h2.3M19.1 12h2.3M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24">
+      <path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.4 8.4 0 1 0 10.6 10.6Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-help" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+      <path d="M9.6 9.2a2.5 2.5 0 1 1 3.6 2.2c-.8.4-1.2 1-1.2 1.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      <circle cx="12" cy="16.8" r="1.1" fill="currentColor" />
+    </symbol>
+    <symbol id="i-user" viewBox="0 0 24 24">
+      <circle cx="12" cy="8.4" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+      <path d="M4.8 20c.8-3.7 3.6-5.7 7.2-5.7s6.4 2 7.2 5.7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24">
+      <path d="M4.5 12h14.5M13.4 6.4 19 12l-5.6 5.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="m4.8 12.6 4.7 4.7L19.4 7.4" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24">
+      <path d="M12 3.6v12M7.4 11.2 12 15.8l4.6-4.6M4.4 20.4h15.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.8" />
+      <path d="M12 7.4V12l3.1 1.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24">
+      <path d="M12 2.8c.6 4.6 2.6 6.6 7.2 7.2-4.6.6-6.6 2.6-7.2 7.2-.6-4.6-2.6-6.6-7.2-7.2 4.6-.6 6.6-2.6 7.2-7.2Z" fill="currentColor" />
+      <path d="M19 16.6c.3 2 1.1 2.8 3 3.1-1.9.3-2.7 1.1-3 3.1-.3-2-1.1-2.8-3-3.1 1.9-.3 2.7-1.1 3-3.1Z" fill="currentColor" opacity=".55" />
+    </symbol>
+    <symbol id="i-mystery" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="49" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.5 7.5" opacity=".35" />
+      <path d="M40.5 45.5c0-12.2 9-20.5 20.8-20.5 11.7 0 20.6 8.1 20.6 19.2 0 9.5-5.6 14.8-13 19.3-6.3 3.9-9.3 7.6-9.3 14.4" fill="none" stroke="currentColor" stroke-width="7.8" stroke-linecap="round" />
+      <circle cx="59.8" cy="94" r="5.6" fill="currentColor" />
+    </symbol>
+    <symbol id="i-note" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="3" />
+      <circle cx="12" cy="12" r="3.4" fill="currentColor" />
+    </symbol>
+    <symbol id="i-headphone" viewBox="0 0 24 24">
+      <path d="M4.5 13.5v-1.2a7.5 7.5 0 0 1 15 0v1.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      <rect x="3.6" y="13" width="4.2" height="6.6" rx="2" fill="none" stroke="currentColor" stroke-width="1.8" />
+      <rect x="16.2" y="13" width="4.2" height="6.6" rx="2" fill="none" stroke="currentColor" stroke-width="1.8" />
+    </symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24">
+      <path d="M8 4.5h8v4.2a4 4 0 0 1-8 0Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+      <path d="M8 6H4.8v1.6A3.2 3.2 0 0 0 8 10.8M16 6h3.2v1.6a3.2 3.2 0 0 1-3.2 3.2M12 12.7v4.5M8.4 20h7.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    </symbol>
+  </svg>
+
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+    <div class="ambient-grid"></div>
+    <img class="ambient-ribbon" src="assets/img/ribbon.png" alt="" />
+  </div>
+
+  <header class="topbar" id="topbar">
+    <a class="brand" href="#" id="brandHome" aria-label="返回大厅">
+      <span class="brand-mark"><svg><use href="#i-ring"></use></svg></span>
+      <span class="brand-copy">
+        <strong>舞萌听歌大作战</strong>
+        <small>MAIMAI SONG QUIZ</small>
+      </span>
+      <span class="brand-dx">DX</span>
+    </a>
+    <div class="top-actions">
+      <button class="cn-chip" id="cnChip" type="button" title="修改玩家 CN">
+        <span class="avatar" id="headerAvatar">舞</span>
+        <span class="cn-copy"><small>PLAYER</small><strong id="headerCn">舞萌玩家</strong></span>
+      </button>
+      <button class="icon-btn" id="soundBtn" type="button" aria-label="开关音效" title="开关音效">
+        <svg><use href="#i-sound"></use></svg>
+      </button>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="切换深浅色" title="切换深浅色">
+        <svg><use href="#i-moon"></use></svg>
+      </button>
+      <button class="icon-btn" id="helpBtn" type="button" aria-label="玩法说明" title="玩法说明">
+        <svg><use href="#i-help"></use></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="main" id="main">
+    <!-- ========================= LOBBY ========================= -->
+    <section class="view view-lobby is-active" id="viewLobby" aria-label="大厅">
+      <nav class="lobby-tabs" aria-label="大厅导航">
+        <button type="button" data-lobby-nav="solo" class="is-active">单人挑战</button>
+        <button type="button" data-lobby-nav="multi"><span class="nav-live"></span>联机对战</button>
+        <button type="button" data-lobby-nav="board">排行榜</button>
+      </nav>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="kicker">
+            <span class="kicker-pulse"></span>
+            <span>MAIMAI DX · SONG QUIZ</span>
+            <span class="kicker-badge">全曲库</span>
+          </div>
+          <h1 class="hero-title">
+            <span class="hero-title-top">舞萌<em>DX</em></span>
+            <span class="hero-title-main">听歌<em>大作战</em></span>
+          </h1>
+          <p class="hero-sub">
+            从 <strong>1,294</strong> 首舞萌曲目中随机截取一段声音。<br />
+            前奏、副歌、还是冷门间奏——每一局都不一样。
+          </p>
+          <div class="hero-tags">
+            <span><svg><use href="#i-note"></use></svg>随机裁切</span>
+            <span><svg><use href="#i-target"></use></svg>四选一</span>
+            <span><svg><use href="#i-trophy"></use></svg>本地榜单</span>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <strong id="heroSongs">1,294</strong>
+              <span>可玩曲目</span>
+            </div>
+            <div class="hero-stat">
+              <strong id="heroCats">6</strong>
+              <span>曲目分类</span>
+            </div>
+            <div class="hero-stat">
+              <strong id="heroBest">—</strong>
+              <span>本机最高分</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <img class="hero-ring-img" src="assets/img/ring.png" alt="" />
+          <svg class="hero-orbit-text" viewBox="0 0 200 200" aria-hidden="true">
+            <defs>
+              <path id="heroTextPath" d="M100,100 m-84,0 a84,84 0 1,1 168,0 a84,84 0 1,1 -168,0" />
+            </defs>
+            <text>
+              <textPath href="#heroTextPath" startOffset="0">MAIMAI SONG QUIZ · RANDOM CUT · LISTEN &amp; GUESS · MAIMAI DX · </textPath>
+            </text>
+          </svg>
+          <div class="hero-art-glow"></div>
+          <div class="disc-stack">
+            <div class="hero-disc disc-back"><div class="disc-grooves"></div></div>
+            <div class="hero-disc disc-mid"><img data-hero-cover="1" alt="" /><div class="disc-grooves"></div></div>
+            <div class="hero-disc disc-front">
+              <img data-hero-cover="0" alt="" />
+              <div class="disc-grooves"></div>
+              <div class="disc-shine"></div>
+            </div>
+            <div class="hero-note note-1"></div>
+            <div class="hero-note note-2"></div>
+            <div class="hero-note note-3"></div>
+          </div>
+          <div class="hero-sticker">
+            <span>1,294</span>
+            <small>TRACKS</small>
+          </div>
+          <div class="hero-chip chip-a">RANDOM<br />CUT</div>
+          <div class="hero-chip chip-b">01:24<br />/ 03:12</div>
+        </div>
+      </section>
+
+      <div class="lobby-grid">
+        <section class="card setup-card" aria-labelledby="setupTitle">
+          <div class="card-head">
+            <div>
+              <span class="eyebrow">STEP 01</span>
+              <h2 id="setupTitle">玩法设置</h2>
+            </div>
+            <span class="live-pill"><i></i>READY</span>
+          </div>
+
+          <div class="mode-grid" id="modeGrid" role="group" aria-label="选择玩法">
+            <button class="mode-card is-active" type="button" data-mode="challenge" aria-pressed="true">
+              <span class="mode-icon"><svg><use href="#i-target"></use></svg></span>
+              <span class="mode-text">
+                <strong>常规挑战</strong>
+                <small>固定题数 · 越快分越高</small>
+              </span>
+              <span class="mode-check"><svg><use href="#i-check"></use></svg></span>
+              <span class="mode-tag">经典</span>
+            </button>
+            <button class="mode-card" type="button" data-mode="royale" aria-pressed="false">
+              <span class="mode-icon"><svg><use href="#i-heart"></use></svg></span>
+              <span class="mode-text">
+                <strong>大逃杀</strong>
+                <small>答错扣命 · 存活到底</small>
+              </span>
+              <span class="mode-check"><svg><use href="#i-check"></use></svg></span>
+              <span class="mode-tag">1 / 3 命</span>
+            </button>
+            <button class="mode-card" type="button" data-mode="genre" aria-pressed="false">
+              <span class="mode-icon"><svg><use href="#i-tags"></use></svg></span>
+              <span class="mode-text">
+                <strong>猜分类</strong>
+                <small>听歌判断所属分类</small>
+              </span>
+              <span class="mode-check"><svg><use href="#i-check"></use></svg></span>
+              <span class="mode-tag">知识</span>
+            </button>
+            <button class="mode-card" type="button" data-mode="tourney" aria-pressed="false">
+              <span class="mode-icon"><svg><use href="#i-bracket"></use></svg></span>
+              <span class="mode-text">
+                <strong>本命淘汰赛</strong>
+                <small>两两对决 · 选出本命</small>
+              </span>
+              <span class="mode-check"><svg><use href="#i-check"></use></svg></span>
+              <span class="mode-tag">8 / 16 首</span>
+            </button>
+          </div>
+
+          <div class="setting-rows">
+            <div class="setting-row" id="countRow">
+              <div class="setting-label"><strong>挑战首数</strong><small>本局题目数量</small></div>
+              <div class="pill-group" id="countPills" role="group" aria-label="挑战首数">
+                <button type="button" data-count="10" class="is-active">10 首</button>
+                <button type="button" data-count="20">20 首</button>
+                <button type="button" data-count="35">35 首</button>
+                <button type="button" data-count="50">50 首</button>
+              </div>
+            </div>
+            <div class="setting-row" id="clipRow">
+              <div class="setting-label"><strong>试听时长</strong><small>每段随机位置</small></div>
+              <div class="pill-group" id="clipPills" role="group" aria-label="试听时长">
+                <button type="button" data-clip="30" class="is-active">30 秒</button>
+                <button type="button" data-clip="15">15 秒</button>
+                <button type="button" data-clip="5">极速 5 秒</button>
+              </div>
+            </div>
+            <div class="setting-row" id="livesRow" hidden>
+              <div class="setting-label"><strong>生命数</strong><small>答错一次扣一命</small></div>
+              <div class="pill-group" id="livesPills" role="group" aria-label="生命数">
+                <button type="button" data-lives="1" class="is-active">1 命</button>
+                <button type="button" data-lives="3">3 命</button>
+              </div>
+            </div>
+            <div class="setting-row" id="sizeRow" hidden>
+              <div class="setting-label"><strong>对决规模</strong><small>曲目数量</small></div>
+              <div class="pill-group" id="sizePills" role="group" aria-label="对决规模">
+                <button type="button" data-size="8" class="is-active">8 首</button>
+                <button type="button" data-size="16">16 首</button>
+              </div>
+            </div>
+          </div>
+
+          <p class="mode-tip" id="modeTip">常规挑战：共 10 题，每题 4 个选项，答得越快加分越多。</p>
+        </section>
+
+        <aside class="side-stack">
+          <section class="card quick-card">
+            <span class="eyebrow">QUICK START</span>
+            <h3>现在就来一局</h3>
+            <p>按当前设置直接开局，偏好会自动保存。</p>
+            <button class="btn btn-primary btn-block" id="quickStartBtn" type="button">
+              <span>快速开始</span><svg><use href="#i-arrow"></use></svg>
+            </button>
+            <div class="quick-note"><svg><use href="#i-clock"></use></svg>平均一局约 4 分钟</div>
+          </section>
+
+          <section class="card mini-board">
+            <div class="mini-head">
+              <span class="eyebrow" id="miniEyebrow">LOCAL BEST</span>
+              <a href="#board" id="miniBoardLink">查看榜单</a>
+            </div>
+            <ol class="mini-list" id="miniBoard">
+              <li class="mini-empty">还没有本地记录，来打一局吧。</li>
+            </ol>
+          </section>
+        </aside>
+      </div>
+
+      <section class="card library-card" id="libraryCard" aria-labelledby="libraryTitle">
+        <div class="card-head">
+          <div>
+            <span class="eyebrow">STEP 02</span>
+            <h2 id="libraryTitle">选择曲库</h2>
+          </div>
+          <div class="lib-actions">
+            <span class="lib-count"><strong id="poolCount">1,294</strong> 首已选</span>
+            <button class="text-btn" id="selectAllBtn" type="button">全选</button>
+            <button class="text-btn" id="invertAllBtn" type="button">反选</button>
+          </div>
+        </div>
+        <div class="genre-grid" id="genreGrid"></div>
+        <div class="library-filter-block">
+          <div class="filter-block-head">
+            <strong>版本</strong>
+            <span id="versionFilterSummary">全部版本</span>
+            <div class="filter-mini-actions">
+              <button type="button" id="versionAllBtn">全选</button>
+              <button type="button" id="versionInvertBtn">反选</button>
+            </div>
+          </div>
+          <div class="filter-chip-grid" id="versionChips"></div>
+        </div>
+        <div class="library-filter-block">
+          <div class="filter-block-head">
+            <strong>MASTER 等级</strong>
+            <span id="levelFilterSummary">全部等级</span>
+            <div class="filter-mini-actions">
+              <button type="button" id="levelAllBtn">全选</button>
+              <button type="button" id="levelInvertBtn">反选</button>
+            </div>
+          </div>
+          <div class="filter-chip-grid is-levels" id="levelChips"></div>
+        </div>
+        <div class="library-filter-foot">
+          <button class="text-btn" id="resetFiltersBtn" type="button">重置筛选</button>
+          <span class="library-scope" id="libraryScope">全曲库</span>
+        </div>
+        <div class="library-foot">
+          <div class="pool-info">
+            <p id="poolHint">已选择全部 6 个分类。随机抽取题目与干扰项。</p>
+            <span class="library-note"><svg><use href="#i-headphone"></use></svg>音频实时裁切自完整曲目 · 宴会場谱面无独立音源，未参与听歌题。</span>
+          </div>
+          <button class="btn btn-primary btn-lg" id="startBtn" type="button">
+            <span>开始挑战</span>
+            <small id="startMeta">10 首 · 30 秒</small>
+            <svg><use href="#i-arrow"></use></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="card board-card" id="board" aria-labelledby="boardTitle">
+        <div class="card-head">
+          <div>
+            <span class="eyebrow">GLOBAL SCORE ATTACK</span>
+            <h2 id="boardTitle">总排行榜</h2>
+          </div>
+          <div class="board-head-actions">
+            <span class="board-status" id="boardStatus" data-state="syncing"><i></i><span>连接中</span></span>
+            <button class="text-btn danger" id="clearBoardBtn" type="button">清空本机记录</button>
+          </div>
+        </div>
+        <div class="board-source-row">
+          <div class="source-tabs" id="boardSourceTabs" role="group" aria-label="榜单范围">
+            <button type="button" data-source="global"><i></i>全服总榜</button>
+            <button type="button" data-source="local" class="is-active"><i></i>本机记录</button>
+          </div>
+          <span class="board-source-hint" id="boardSourceHint">仅保存在本机浏览器</span>
+        </div>
+        <div class="board-toolbar">
+          <div class="tabs" id="boardModeTabs" role="group" aria-label="按模式筛选">
+            <button class="is-active" type="button" data-bmode="all">全部</button>
+            <button type="button" data-bmode="challenge">常规</button>
+            <button type="button" data-bmode="royale">大逃杀</button>
+            <button type="button" data-bmode="genre">猜分类</button>
+          </div>
+          <div class="pill-group sm" id="boardClipTabs" role="group" aria-label="按试听时长筛选">
+            <button class="is-active" type="button" data-bclip="all">全部时长</button>
+            <button type="button" data-bclip="30">30 秒</button>
+            <button type="button" data-bclip="15">15 秒</button>
+            <button type="button" data-bclip="5">5 秒</button>
+          </div>
+          <div class="pill-group sm" id="boardScopeTabs" role="group" aria-label="按曲库范围筛选">
+            <button class="is-active" type="button" data-bscope="all">全部曲库</button>
+            <button type="button" data-bscope="full">全曲库</button>
+            <button type="button" data-bscope="custom">其他</button>
+          </div>
+        </div>
+        <div class="board-table-wrap">
+          <table class="board-table">
+            <thead>
+              <tr>
+                <th class="col-rank">#</th>
+                <th class="col-cn">CN</th>
+                <th class="col-mode">模式</th>
+                <th class="col-score">得分</th>
+                <th class="col-acc">准确率</th>
+                <th class="col-avg">均时</th>
+                <th class="col-combo">最高连对</th>
+                <th class="col-date">日期</th>
+              </tr>
+            </thead>
+            <tbody id="boardBody">
+              <tr class="board-empty"><td colspan="8">还没有记录。完成一局单人挑战后，成绩会保存在这里。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="board-note" id="boardNote">全服榜记录每位玩家的最佳成绩；本机也会保留一份记录。</p>
+      </section>
+
+      <section class="how-strip" aria-label="玩法说明">
+        <div class="how-item">
+          <span class="how-num">01</span>
+          <div><strong>随机裁切</strong><p>每首歌随机选择一段副歌或间奏，重听还会换一段。</p></div>
+        </div>
+        <div class="how-item">
+          <span class="how-num">02</span>
+          <div><strong>速度得分</strong><p>答对基础分 + 剩余时间加成 + 连对奖励，越快越高。</p></div>
+        </div>
+        <div class="how-item">
+          <span class="how-num">03</span>
+          <div><strong>本命淘汰赛</strong><p>8 或 16 首随机曲目两两对决，用耳朵选出你的本命。</p></div>
+        </div>
+      </section>
+
+      <footer class="site-foot">
+        <span>非官方粉丝作品 · 曲目与音源来自 LXNS 公共曲库 · 仅供学习交流</span>
+        <span id="dataStamp">—</span>
+        <span class="foot-credit">灵感来源：<a href="https://playsnowgames.site/games/lovelive-song-battle/index.html" target="_blank" rel="noopener noreferrer" title="https://playsnowgames.site/games/lovelive-song-battle/index.html">LL听歌大作战</a></span>
+      </footer>
+    </section>
+
+
+    <!-- ========================= MULTIPLAYER ========================= -->
+    <section class="view view-multi" id="viewMulti" hidden aria-label="联机对战">
+      <div class="multi-head">
+        <button class="ghost-btn" id="multiBackBtn" type="button"><span>←</span> 单人模式</button>
+        <div class="multi-title">
+          <span class="eyebrow">ONLINE BATTLE</span>
+          <h1>联机对战</h1>
+          <p>2–8 人同房 · 同一段音频 · 实时积分</p>
+        </div>
+        <span class="conn-status" id="connStatus" data-state="connecting"><i></i><span>连接中…</span></span>
+      </div>
+
+      <div class="mp-offline" id="multiOffline" hidden>
+        <div>
+          <strong>联机服务未连接</strong>
+          <p>请用 <code>node server.mjs</code> 启动服务后重试；单人模式和全服榜不受影响。</p>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="multiReconnectBtn" type="button">重新连接</button>
+      </div>
+
+      <div class="multi-lobby" id="multiLobbyPane">
+        <div class="multi-grid">
+          <section class="card create-room">
+            <div class="card-head">
+              <div><span class="eyebrow">CREATE ROOM</span><h2>创建房间</h2></div>
+              <span class="live-pill"><i></i>2–8 人</span>
+            </div>
+            <div class="create-setting">
+              <div class="setting-label"><strong>玩法模式</strong><small>默认大逃杀</small></div>
+              <div class="pill-group" id="mpModePills" role="group" aria-label="联机玩法">
+                <button type="button" data-mp-mode="royale" class="is-active">大逃杀</button>
+                <button type="button" data-mp-mode="bet">押注豪赌</button>
+                <button type="button" data-mp-mode="challenge">常规积分</button>
+              </div>
+            </div>
+            <div class="create-setting" id="mpLivesSetting">
+              <div class="setting-label"><strong>生命数</strong><small>1 命标准 / 3 命练习</small></div>
+              <div class="pill-group" id="mpLivesPills" role="group" aria-label="联机生命数">
+                <button type="button" data-mp-lives="1" class="is-active">1 命 · 标准</button>
+                <button type="button" data-mp-lives="3">3 命 · 练习</button>
+              </div>
+            </div>
+            <div class="create-setting" id="mpCountSetting">
+              <div class="setting-label"><strong>挑战首数</strong><small>常规积分模式使用</small></div>
+              <div class="pill-group" id="mpCountPills" role="group" aria-label="联机题数">
+                <button type="button" data-mp-count="10" class="is-active">10 首</button>
+                <button type="button" data-mp-count="20">20 首</button>
+                <button type="button" data-mp-count="35">35 首</button>
+                <button type="button" data-mp-count="50">50 首</button>
+              </div>
+            </div>
+            <div class="create-setting">
+              <div class="setting-label"><strong>试听时长</strong><small>同步随机裁切</small></div>
+              <div class="pill-group" id="mpClipPills" role="group" aria-label="联机试听时长">
+                <button type="button" data-mp-clip="30" class="is-active">30 秒</button>
+                <button type="button" data-mp-clip="15">15 秒</button>
+                <button type="button" data-mp-clip="5">极速 5 秒</button>
+              </div>
+            </div>
+            <div class="create-setting">
+              <div class="setting-label"><strong>房间可见性</strong><small>公开房会出现在大厅</small></div>
+              <div class="pill-group" id="mpVisibilityPills" role="group" aria-label="房间可见性">
+                <button type="button" data-mp-public="1" class="is-active">公开房间</button>
+                <button type="button" data-mp-public="0">仅房间码</button>
+              </div>
+            </div>
+            <p class="mp-pool-hint" id="mpPoolHint">曲库：全部 6 个分类 · 1,294 首</p>
+            <button class="btn btn-primary btn-block" id="createRoomBtn" type="button">
+              <svg><use href="#i-arrow"></use></svg><span>创建房间</span>
+            </button>
+          </section>
+
+          <section class="card room-list-card">
+            <div class="card-head">
+              <div><span class="eyebrow">ROOM LIST</span><h2>房间大厅</h2></div>
+              <button class="text-btn" id="refreshRoomsBtn" type="button">刷新</button>
+            </div>
+            <div class="room-list" id="roomList">
+              <div class="room-empty">正在连接联机服务…</div>
+            </div>
+            <div class="join-code-row">
+              <input class="text-input" id="joinCodeInput" maxlength="4" placeholder="输入 4 位房间码" autocomplete="off" spellcheck="false" />
+              <button class="btn btn-ghost" id="joinCodeBtn" type="button">加入</button>
+            </div>
+            <p class="mp-note">找不到想玩的房间？创建一个，把房间码发给朋友。</p>
+          </section>
+        </div>
+        <div class="multi-tips">
+          <div class="multi-tip"><span>01</span><div><strong>创建一间房</strong><p>选好题数与试听时长，公开房会出现在右侧大厅。</p></div></div>
+          <div class="multi-tip"><span>02</span><div><strong>把房间码发给朋友</strong><p>复制房间链接直接发给朋友，2–8 人都可以加入。</p></div></div>
+          <div class="multi-tip"><span>03</span><div><strong>同题同段竞速</strong><p>所有人同一段音频、同一个倒计时，全房统一判分。</p></div></div>
+        </div>
+      </div>
+
+      <div class="multi-room" id="multiRoomPane" hidden>
+        <div class="room-layout">
+          <section class="card room-card">
+            <div class="room-top">
+              <div class="room-code-block">
+                <span class="eyebrow">ROOM CODE</span>
+                <strong id="roomCodeText">----</strong>
+              </div>
+              <div class="room-top-actions">
+                <button class="text-btn" id="copyRoomBtn" type="button">复制邀请</button>
+                <button class="ghost-btn" id="leaveRoomBtn" type="button">离开房间</button>
+              </div>
+            </div>
+            <div class="room-link-row">
+              <span class="room-link-label">ROOM LINK</span>
+              <input class="room-link-input" id="roomLinkInput" readonly aria-label="房间邀请链接" />
+              <button class="ghost-btn room-link-copy" id="copyRoomLinkBtn" type="button">复制链接</button>
+            </div>
+            <div class="room-players" id="roomPlayers"></div>
+            <div class="room-settings-strip">
+              <span id="roomSettingsText">10 首 · 30 秒 · 公开</span>
+              <button class="text-btn room-lib-btn" id="roomVisibilityBtn" type="button" hidden>设为私人</button>
+              <button class="text-btn room-lib-btn" id="roomLibraryBtn" type="button" hidden>修改曲库</button>
+              <span id="roomPhaseText">等待玩家加入</span>
+            </div>
+            <div class="room-edit" id="roomEdit" hidden>
+              <div class="room-edit-row">
+                <span>模式</span>
+                <div class="pill-group sm" id="roomModePills" role="group" aria-label="修改房间模式">
+                  <button type="button" data-room-mode="royale">大逃杀</button>
+                  <button type="button" data-room-mode="bet">押注豪赌</button>
+                  <button type="button" data-room-mode="challenge">常规积分</button>
+                </div>
+              </div>
+              <div class="room-edit-row" id="roomLivesRow">
+                <span>生命</span>
+                <div class="pill-group sm" id="roomLivesPills" role="group" aria-label="修改房间生命数">
+                  <button type="button" data-room-lives="1">1 命</button>
+                  <button type="button" data-room-lives="3">3 命</button>
+                </div>
+              </div>
+              <div class="room-edit-row" id="roomCountRow">
+                <span>首数</span>
+                <div class="pill-group sm" id="roomCountPills" role="group" aria-label="修改房间题数">
+                  <button type="button" data-room-count="10">10 首</button>
+                  <button type="button" data-room-count="20">20 首</button>
+                  <button type="button" data-room-count="35">35 首</button>
+                  <button type="button" data-room-count="50">50 首</button>
+                </div>
+              </div>
+              <div class="room-edit-row">
+                <span>试听</span>
+                <div class="pill-group sm" id="roomClipPills" role="group" aria-label="修改房间试听时长">
+                  <button type="button" data-room-clip="30">30 秒</button>
+                  <button type="button" data-room-clip="15">15 秒</button>
+                  <button type="button" data-room-clip="5">极速 5 秒</button>
+                </div>
+              </div>
+            </div>
+            <div class="room-actions">
+              <button class="btn btn-primary" id="readyToggleBtn" type="button">准备</button>
+              <button class="btn btn-primary" id="startRoomBtn" type="button" hidden>开始游戏</button>
+              <span class="room-hint" id="roomHint">准备后等待房主开始</span>
+            </div>
+          </section>
+          <aside class="card room-side">
+            <span class="eyebrow">ROOM RULES</span>
+            <h2>同题竞速</h2>
+            <ul>
+              <li>所有人同一段音频、同一个倒计时。</li>
+              <li>大逃杀：答错扣血并同步给全房，生命归零淘汰，最后存活者获胜。</li>
+              <li>常规积分：答对得分，全部题目结束后按总分排名。</li>
+              <li>押注豪赌：每题先看线索押自己本题答对，20% / 50% / ALL IN，超时自动押 20%；随后进入猜歌阶段，最终筹码最多者获胜。</li>
+              <li>大逃杀 1 命标准、3 命练习；生命状态实时同步。</li>
+            </ul>
+            <div class="room-side-note">房主可调整模式、生命数、题数与试听时长，也可以踢人，或把房间切换为公开/私人。</div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="multi-game" id="multiGamePane" hidden>
+        <div class="mg-top">
+          <span class="mg-room">ROOM <b id="mgRoomCode">----</b></span>
+          <span class="mg-progress">QUESTION <b id="mgIndex">1</b> / <em id="mgTotal">10</em></span>
+          <span class="mg-score">SCORE <b id="mgScore">0</b></span>
+          <button class="ghost-btn mg-quit" id="mgQuitBtn" type="button">离开</button>
+        </div>
+        <div class="mg-layout">
+          <section class="game-card mg-card">
+            <div class="game-hud">
+              <div class="hud-box hud-q"><span>QUESTION</span><strong><b id="mgHudIndex">1</b><i>/</i><em id="mgHudTotal">10</em></strong></div>
+              <div class="hud-box hud-combo"><span>COMBO</span><strong id="mgCombo">0</strong></div>
+              <div class="hud-box hud-lives" id="mgLivesBox"><span>LIVES</span><strong id="mgLives">♥</strong></div>
+              <div class="hud-box hud-time"><span>TIME</span><strong id="mgTime">--</strong></div>
+            </div>
+            <div class="mg-hp-strip" id="mgHpStrip" aria-label="玩家生命值"></div>
+            <div class="mg-bet-stage" id="mgBetStage" hidden>
+              <div class="mg-bet-stage-head">
+                <span>下注阶段</span>
+                <b id="mgBetCountdown">8.0s</b>
+              </div>
+              <div class="mg-bet-clue">
+                <span>本题线索</span>
+                <strong id="mgBetClueText">—</strong>
+                <em id="mgBetClueTag">—</em>
+              </div>
+              <div class="mg-bet-odds-row">
+                <span>答对返还倍率</span>
+                <b>×<i id="mgBetOdds">1.5</i></b>
+              </div>
+              <div class="mg-bet-balance">
+                <span>当前筹码</span>
+                <strong id="mgBetStageChips">1,000</strong>
+              </div>
+              <div class="mg-bet-choices" id="mgBetChoices">
+                <button type="button" data-bet-self="20">
+                  <b>20%</b><small id="mgBet20Amount">200</small>
+                </button>
+                <button type="button" data-bet-self="50">
+                  <b>50%</b><small id="mgBet50Amount">500</small>
+                </button>
+                <button type="button" data-bet-self="100">
+                  <b>ALL IN</b><small id="mgBet100Amount">1,000</small>
+                </button>
+              </div>
+              <p class="mg-bet-hint">选择本题押注比例，确认后不可更改</p>
+              <p class="mg-bet-note2">答对按倍率返还；另把败者实际输掉的筹码，按答对者各自本轮实际押注占比分配。</p>
+              <p class="mg-bet-footnote">开局 1,000 虚拟筹码 · 不涉真钱 · 超时自动押 20%</p>
+            </div>
+            <div class="stage mg-stage">
+              <div class="stage-left">
+                <div class="timer-ring" id="mgTimerRing" style="--bpm: 0.32s">
+                  <svg class="ring-svg" viewBox="0 0 260 260" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="mgRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff4f9a" />
+                        <stop offset="48%" stop-color="#ff9fc6" />
+                        <stop offset="100%" stop-color="#3fd4ff" />
+                      </linearGradient>
+                      <linearGradient id="mgClipGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#ffd23f" />
+                        <stop offset="100%" stop-color="#ff8a3d" />
+                      </linearGradient>
+                    </defs>
+                    <circle class="ring-track" cx="130" cy="130" r="116" />
+                    <circle class="ring-ticks" cx="130" cy="130" r="124" />
+                    <circle class="ring-progress" id="mgRingProgress" cx="130" cy="130" r="116" stroke="url(#mgRingGrad)" />
+                    <circle class="ring-clip" id="mgRingClip" cx="130" cy="130" r="104" stroke="url(#mgClipGrad)" />
+                  </svg>
+                  <div class="timer-core">
+                    <div class="disc" id="mgDisc">
+                      <img class="disc-cover is-hidden" id="mgCover" alt="" />
+                      <div class="disc-shade" id="mgDiscShade"></div>
+                      <div class="disc-label"></div>
+                      <div class="disc-shine"></div>
+                    </div>
+                    <span class="disc-hole" aria-hidden="true"></span>
+                  </div>
+                  <div class="orbit" id="mgOrbit" aria-hidden="true">
+                    <i class="orbit-note n1"></i><i class="orbit-note n2"></i><i class="orbit-note n3"></i>
+                  </div>
+                </div>
+                <div class="timer-caption">
+                  <span id="mgTimerLabel"><i class="dot-live"></i>等待开始</span>
+                  <b id="mgTimerSec">--</b>
+                </div>
+              </div>
+              <div class="stage-right">
+                <div class="clip-meta">
+                  <span class="clip-tag"><i></i>SYNC CUT</span>
+                  <span id="mgClipInfo">全房同段</span>
+                </div>
+                <div class="eq" id="mgEq" aria-hidden="true"></div>
+                <div class="tease-row" id="mgTeaseRow">
+                  <span class="genre-badge" id="mgGenre">MAIMAI DX</span>
+                  <span class="bpm-badge" id="mgBpm">— BPM</span>
+                </div>
+                <h2 class="answer-title" id="mgAnswerTitle">准备听音…</h2>
+                <p class="answer-sub" id="mgAnswerSub">所有玩家将同时开始。</p>
+              </div>
+            </div>
+            <div class="mg-bet-panel" id="mgBetPanel" hidden aria-hidden="true">
+              <div class="mg-bet-head">
+                <span>HIGH ROLLER · 押注</span>
+                <b id="mgBetChips">◆ 1,000</b>
+              </div>
+              <div class="mg-bet-target-row">
+                <span id="mgBetTarget">点上方方格选择押注对象</span>
+                <em id="mgBetAmount">未押注</em>
+              </div>
+              <div class="mg-bet-actions" id="mgBetActions" role="group" aria-label="押注筹码比例">
+                <button type="button" data-bet-pct="20">20%</button>
+                <button type="button" data-bet-pct="50">50%</button>
+                <button type="button" data-bet-pct="100">ALL IN</button>
+              </div>
+              <p class="mg-bet-note" id="mgBetNote">押 TA 本题答对 · 1:1 赔率；押错扣筹码</p>
+            </div>
+            <div class="options" id="mgOptions" role="group" aria-label="联机答案选项"></div>
+            <div class="reveal-strip" id="mgReveal" hidden>
+              <div class="reveal-cover"><img id="mgRevealCover" alt="" /></div>
+              <div class="reveal-info">
+                <span class="reveal-tag" id="mgRevealTag">RESULT</span>
+                <h3 id="mgRevealTitle">—</h3>
+                <p id="mgRevealArtist">—</p>
+                <div class="reveal-meta" id="mgRevealMeta"></div>
+                <p class="reveal-aliases" id="mgRevealAliases"></p>
+              </div>
+              <div class="reveal-score">
+                <span>本问得分</span>
+                <strong id="mgRevealScore">+0</strong>
+                <small id="mgNextHint">下一题即将开始</small>
+              </div>
+            </div>
+            <div class="stage-loading" id="mgLoading">
+              <span class="loader-ring"></span>
+              <strong>正在同步音频…</strong>
+              <small>所有玩家准备后开始</small>
+            </div>
+            <div class="mg-judge" id="mgJudge" hidden aria-live="polite"></div>
+          </section>
+          <aside class="mg-side" id="mgSide">
+            <div class="mg-side-head"><span class="eyebrow">LIVE SCORE</span><span id="mgPlayersCount">0 / 8</span></div>
+            <ol class="mg-scoreboard" id="mgScoreboard"></ol>
+            <div class="mg-side-note" id="mgSideNote">答得越快，速度分越高。房主可在结束后重开。</div>
+          </aside>
+        </div>
+        <div class="mg-final" id="mgFinal" hidden>
+          <div class="mg-final-card">
+            <span class="eyebrow">FINAL RESULT</span>
+            <h2 id="mgFinalTitle">本局结束</h2>
+            <p id="mgFinalSub">—</p>
+            <div class="mf-hero" id="mgFinalHero"></div>
+            <div class="mf-badges" id="mgFinalBadges"></div>
+            <ol class="mg-final-list" id="mgFinalList"></ol>
+            <div class="mg-final-actions">
+              <button class="btn btn-primary" id="mgResetBtn" type="button">再来一局</button>
+              <button class="btn btn-ghost" id="mgLeaveBtn" type="button">离开房间</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= GAME ========================= -->
+    <section class="view view-game" id="viewGame" hidden aria-label="答题中">
+      <div class="game-topbar">
+        <button class="ghost-btn" id="quitBtn" type="button"><span>←</span> 退出</button>
+        <div class="game-mode">
+          <span class="game-mode-label" id="gameModeLabel">常规挑战</span>
+          <div class="mini-dots" id="gameDots"></div>
+        </div>
+        <div class="game-score"><span>SCORE</span><strong id="gameScore">0</strong></div>
+      </div>
+
+      <div class="game-card">
+        <div class="game-hud">
+          <div class="hud-box hud-q"><span>QUESTION</span><strong><b id="qIndex">1</b><i>/</i><em id="qTotal">10</em></strong></div>
+          <div class="hud-box hud-combo"><span>COMBO</span><strong id="comboVal">0</strong></div>
+          <div class="hud-box hud-lives" id="livesBox"><span>LIVES</span><strong id="livesVal">♥</strong></div>
+          <div class="hud-box hud-time"><span>TIME</span><strong id="timeVal">30.0</strong></div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-left">
+            <div class="timer-ring" id="timerRing" style="--bpm: 0.32s">
+              <svg class="ring-svg" viewBox="0 0 260 260" aria-hidden="true">
+                <defs>
+                  <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ff4f9a" />
+                    <stop offset="48%" stop-color="#ff9fc6" />
+                    <stop offset="100%" stop-color="#3fd4ff" />
+                  </linearGradient>
+                  <linearGradient id="clipGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffd23f" />
+                    <stop offset="100%" stop-color="#ff8a3d" />
+                  </linearGradient>
+                </defs>
+                <circle class="ring-track" cx="130" cy="130" r="116" />
+                <circle class="ring-ticks" cx="130" cy="130" r="124" />
+                <circle class="ring-progress" id="ringProgress" cx="130" cy="130" r="116" />
+                <circle class="ring-clip" id="ringClip" cx="130" cy="130" r="104" />
+              </svg>
+              <div class="timer-core">
+                <div class="disc" id="gameDisc">
+                  <img class="disc-cover is-hidden" id="gameCover" alt="" />
+                  <div class="disc-shade" id="discShade"></div>
+                  <div class="disc-label"></div>
+                  <div class="disc-shine"></div>
+                </div>
+                <span class="disc-hole" aria-hidden="true"></span>
+              </div>
+              <div class="orbit" id="orbit" aria-hidden="true">
+                <i class="orbit-note n1"></i><i class="orbit-note n2"></i><i class="orbit-note n3"></i>
+              </div>
+            </div>
+            <div class="timer-caption">
+              <span id="timerLabel"><i class="dot-live"></i>正在缓冲片段</span>
+              <b id="timerSec">--</b>
+            </div>
+          </div>
+
+          <div class="stage-right">
+            <div class="clip-meta">
+              <span class="clip-tag"><i></i>RANDOM CUT</span>
+              <span class="clip-range" id="clipRange">等待裁切…</span>
+            </div>
+            <div class="eq" id="eq" aria-hidden="true"></div>
+            <div class="tease-row" id="teaseRow">
+              <span class="genre-badge" id="genreBadge">MAIMAI DX</span>
+              <span class="bpm-badge" id="bpmBadge">— BPM</span>
+            </div>
+            <h2 class="answer-title" id="answerTitle">听出是哪首歌了吗？</h2>
+            <p class="answer-sub" id="answerSub">四选一，越快答对分数越高。</p>
+            <div class="answer-actions">
+              <button class="replay-btn" id="replayBtn" type="button">
+                <svg><use href="#i-replay"></use></svg>
+                <span>换一段重听</span>
+                <kbd>R</kbd>
+              </button>
+              <span class="listen-state" id="listenState">试听中 · 剩余 30s</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="options" id="options" role="group" aria-label="答案选项"></div>
+
+        <div class="game-footer">
+          <span class="foot-hint">键盘 <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> 作答</span>
+          <div class="judgement-live" id="judgementLive" aria-live="polite"></div>
+          <span class="foot-hint"><kbd>R</kbd> 换片段</span>
+        </div>
+
+        <div class="stage-loading" id="stageLoading">
+          <span class="loader-ring"></span>
+          <strong>正在切一段给你听…</strong>
+          <small>首次播放需要缓冲几秒</small>
+        </div>
+
+        <div class="reveal-strip" id="revealStrip" hidden>
+          <div class="reveal-cover"><img id="revealCover" alt="" /></div>
+          <div class="reveal-info">
+            <span class="reveal-tag" id="revealTag">CORRECT</span>
+            <h3 id="revealTitle">曲名</h3>
+            <p id="revealArtist">曲师</p>
+            <div class="reveal-meta" id="revealMeta"></div>
+            <p class="reveal-aliases" id="revealAliases"></p>
+          </div>
+          <div class="reveal-score">
+            <span>本问得分</span>
+            <strong id="revealScore">+0</strong>
+            <button class="btn btn-primary btn-sm" id="nextBtn" type="button">下一题 <svg><use href="#i-arrow"></use></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= RESULT ========================= -->
+    <section class="view view-result" id="viewResult" hidden aria-label="结算">
+      <div class="result-shell">
+        <div class="result-scorecard" id="resultScorecard">
+          <div class="scorecard-head">
+            <span class="scorecard-brand"><svg><use href="#i-ring"></use></svg>舞萌听歌大作战</span>
+            <span class="scorecard-mode" id="scorecardMode">常规挑战</span>
+          </div>
+          <div class="scorecard-main">
+            <div class="rank-block">
+              <span>RANK</span>
+              <strong class="rank-letter" id="rankLetter">S</strong>
+              <em id="rankLabel">GREAT</em>
+            </div>
+            <div class="score-block">
+              <span>TOTAL SCORE</span>
+              <strong id="finalScore">0</strong>
+              <div class="score-subline" id="scoreSubline">10 首 · 30 秒 · 全曲库</div>
+            </div>
+            <div class="scorecard-covers" id="scorecardCovers" aria-hidden="true"></div>
+          </div>
+          <div class="scorecard-stats">
+            <div><span>准确率</span><strong id="statAcc">0%</strong></div>
+            <div><span>平均用时</span><strong id="statAvg">--</strong></div>
+            <div><span>最高连对</span><strong id="statCombo">0</strong></div>
+            <div><span>正确题数</span><strong id="statCorrect">0 / 0</strong></div>
+          </div>
+          <div class="scorecard-foot">
+            <span class="scorecard-cn" id="resultCn">舞萌玩家</span>
+            <span id="resultDate">2026.11.25</span>
+            <span class="scorecard-disclaimer">非官方粉丝作品 · MAIMAI SONG QUIZ</span>
+          </div>
+        </div>
+
+        <aside class="result-side">
+          <span class="eyebrow">LIVE RESULT</span>
+          <h1 id="resultTitle">挑战完成</h1>
+          <p id="resultDesc">这是你与 1,294 首歌的一次短暂相遇。</p>
+          <div class="new-record" id="newRecord" hidden><svg><use href="#i-spark"></use></svg>新纪录！</div>
+          <div class="result-actions">
+            <button class="btn btn-primary btn-block" id="saveCardBtn" type="button">
+              <svg><use href="#i-download"></use></svg><span>保存结算卡</span>
+            </button>
+            <button class="btn btn-ghost btn-block" id="againBtn" type="button"><svg><use href="#i-replay"></use></svg><span>再来一局</span></button>
+            <button class="btn btn-ghost btn-block" id="backLobbyBtn" type="button">返回大厅</button>
+          </div>
+          <div class="result-extra" id="resultExtra"></div>
+        </aside>
+      </div>
+
+      <section class="card review-card">
+        <div class="card-head">
+          <div>
+            <span class="eyebrow">TRACK REVIEW</span>
+            <h2>曲单复盘</h2>
+          </div>
+          <span class="review-hint">点击「试听」随机回放一段</span>
+        </div>
+        <div class="review-list" id="reviewList"></div>
+        <div class="review-foot">
+          <button class="btn btn-ghost" id="retryWrongBtn" type="button" hidden>只练错题</button>
+        </div>
+      </section>
+    </section>
+
+    <!-- ========================= TOURNAMENT ========================= -->
+    <section class="view view-tourney" id="viewTourney" hidden aria-label="本命淘汰赛">
+      <div class="tour-head">
+        <button class="ghost-btn" id="tourExitBtn" type="button"><span>←</span> 退出</button>
+        <div class="tour-title">
+          <span class="eyebrow">HONMEI TOURNAMENT</span>
+          <h1>本命淘汰赛</h1>
+          <p id="tourSub">8 首 · 3 轮 · 两两对决</p>
+        </div>
+        <div class="tour-round">
+          <span id="tourRoundLabel">8 强</span>
+          <div class="round-dots" id="roundDots"></div>
+        </div>
+      </div>
+
+      <div class="tour-bracket" id="tourBracket" aria-label="对阵进度"></div>
+
+      <div class="duel-wrap" id="duelWrap">
+        <article class="duel-card" data-side="a">
+          <div class="duel-cover">
+            <img id="duelCoverA" alt="" />
+            <button class="duel-play" id="duelPlayA" type="button"><svg><use href="#i-play"></use></svg><span>试听 A</span></button>
+            <span class="duel-badge" id="duelBadgeA">A</span>
+          </div>
+          <div class="duel-body">
+            <span class="genre-pill" id="duelGenreA">分类</span>
+            <h2 id="duelTitleA">曲名</h2>
+            <p class="duel-artist" id="duelArtistA">曲师</p>
+            <p class="duel-chart" id="duelChartA">MASTER 13+</p>
+          </div>
+          <button class="btn duel-pick" id="duelPickA" type="button">选它！</button>
+        </article>
+
+        <div class="vs-badge" aria-hidden="true"><span>VS</span><i></i></div>
+
+        <article class="duel-card" data-side="b">
+          <div class="duel-cover">
+            <img id="duelCoverB" alt="" />
+            <button class="duel-play" id="duelPlayB" type="button"><svg><use href="#i-play"></use></svg><span>试听 B</span></button>
+            <span class="duel-badge" id="duelBadgeB">B</span>
+          </div>
+          <div class="duel-body">
+            <span class="genre-pill" id="duelGenreB">分类</span>
+            <h2 id="duelTitleB">曲名</h2>
+            <p class="duel-artist" id="duelArtistB">曲师</p>
+            <p class="duel-chart" id="duelChartB">MASTER 13+</p>
+          </div>
+          <button class="btn duel-pick" id="duelPickB" type="button">选它！</button>
+        </article>
+      </div>
+      <p class="tour-hint">两首都听一下。点「试听」切换，选你更舍不得淘汰的那首。</p>
+
+      <div class="champion-wrap" id="championWrap" hidden>
+        <div class="champion-card">
+          <span class="eyebrow">YOUR HONMEI</span>
+          <div class="champion-cover">
+            <img id="championCover" alt="" />
+            <div class="champion-shine"></div>
+          </div>
+          <h2 id="championTitle">曲名</h2>
+          <p id="championArtist">曲师</p>
+          <span class="champion-tag" id="championTag">分类 · MASTER 13+</span>
+          <p class="champion-note">从 8 首曲目中一路过关斩将，你的本命是它。</p>
+          <div class="champion-actions">
+            <button class="btn btn-primary" id="honmeiShareBtn" type="button"><svg><use href="#i-download"></use></svg>保存本命卡</button>
+            <button class="btn btn-ghost" id="tourAgainBtn" type="button"><svg><use href="#i-replay"></use></svg>再来一次</button>
+            <button class="btn btn-ghost" id="tourBackBtn" type="button">返回大厅</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================= MODALS ========================= -->
+  <div class="modal-layer" id="roomLibraryModal" hidden>
+    <div class="modal-backdrop" data-close="roomLibraryModal"></div>
+    <div class="modal-card room-lib-card" role="dialog" aria-modal="true" aria-labelledby="roomLibTitle">
+      <button class="modal-close" data-close="roomLibraryModal" type="button" aria-label="关闭"><svg><use href="#i-close"></use></svg></button>
+      <span class="eyebrow">ROOM LIBRARY</span>
+      <h2 id="roomLibTitle">修改房间曲库</h2>
+      <p class="room-lib-sub">房主可限制收录版本、MASTER 等级与分类；保存后全房生效。</p>
+      <div class="room-lib-cats" id="roomLibCats"></div>
+      <div class="room-lib-filter-group">
+        <div class="filter-block-head">
+          <strong>版本</strong>
+          <span id="roomLibVersionSummary">全部版本</span>
+          <div class="filter-mini-actions">
+            <button type="button" id="roomLibVersionAll">全选</button>
+            <button type="button" id="roomLibVersionInvert">反选</button>
+          </div>
+        </div>
+        <div class="filter-chip-grid" id="roomLibVersionChips"></div>
+      </div>
+      <div class="room-lib-filter-group">
+        <div class="filter-block-head">
+          <strong>MASTER 等级</strong>
+          <span id="roomLibLevelSummary">全部等级</span>
+          <div class="filter-mini-actions">
+            <button type="button" id="roomLibLevelAll">全选</button>
+            <button type="button" id="roomLibLevelInvert">反选</button>
+          </div>
+        </div>
+        <div class="filter-chip-grid is-levels" id="roomLibLevelChips"></div>
+      </div>
+      <div class="room-lib-pool" id="roomLibPool">—</div>
+      <div class="modal-actions">
+        <button class="ghost-btn" data-close="roomLibraryModal" type="button">取消</button>
+        <button class="btn btn-primary" id="roomLibSave" type="button">保存曲库</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-layer" id="profileModal" hidden>
+    <div class="modal-backdrop" data-close="profileModal"></div>
+    <div class="modal-card modal-profile" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <button class="modal-close" type="button" data-close="profileModal" aria-label="关闭"><svg><use href="#i-close"></use></svg></button>
+      <span class="eyebrow">PLAYER PROFILE</span>
+      <h2 id="profileTitle">修改你的 CN</h2>
+      <p class="modal-sub">CN 会显示在房间、排行榜和结算卡上；每台设备的随机标识会自动附加在后面。</p>
+      <div class="profile-preview">
+        <span class="avatar avatar-lg" id="profileAvatar">舞</span>
+        <div>
+          <strong id="profilePreviewName">舞萌玩家</strong>
+          <small>MAIMAI SONG QUIZ PLAYER</small>
+        </div>
+      </div>
+      <label class="field-label" for="cnInput">CN / 昵称</label>
+      <input class="text-input" id="cnInput" maxlength="11" autocomplete="nickname" placeholder="输入你的 CN" />
+      <p class="profile-tag-hint" id="profileTagHint">设备标识 <b>#----</b> 会自动附加在 CN 后面，一台设备一个。</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" type="button" data-close="profileModal">取消</button>
+        <button class="btn btn-primary" id="saveCnBtn" type="button">保存</button>
+      </div>
+      <div class="profile-danger">
+        <span>本机共 <strong id="profileRecordCount">0</strong> 条榜单记录</span>
+        <button class="text-btn danger" id="profileClearBtn" type="button">清空本地记录</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-layer" id="helpModal" hidden>
+    <div class="modal-backdrop" data-close="helpModal"></div>
+    <div class="modal-card modal-help" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <button class="modal-close" type="button" data-close="helpModal" aria-label="关闭"><svg><use href="#i-close"></use></svg></button>
+      <span class="eyebrow">HOW TO PLAY</span>
+      <h2 id="helpTitle">玩法说明</h2>
+      <div class="help-scroll">
+        <section>
+          <h3><span>01</span>听一段，猜曲名</h3>
+          <p>每道题会从完整曲目中随机裁切一段声音，位置每次都不一样。选出正确曲名即可得分；重听也会换一段新的。</p>
+        </section>
+        <section>
+          <h3><span>02</span>计分方式</h3>
+          <p>答对基础分 <strong>500</strong>，再加上最多 <strong>500</strong> 的速度奖励与连对奖励。答错不扣分，但会中断连对；大逃杀模式会扣一条命。</p>
+        </section>
+        <section>
+          <h3><span>03</span>四种玩法</h3>
+          <ul>
+            <li><strong>常规挑战</strong>：10 / 20 / 35 / 50 题，冲刺高分。</li>
+            <li><strong>大逃杀</strong>：1 命或 3 命，答错耗尽生命即结束。</li>
+            <li><strong>猜分类</strong>：四选一判断曲目所属分类。</li>
+            <li><strong>本命淘汰赛</strong>：随机 8 / 16 首，两两对决选出本命，不计入榜单。</li>
+          </ul>
+        </section>
+        <section>
+          <h3><span>04</span>曲库与音源</h3>
+          <p>曲库为舞萌 DX 全量 <strong>1,360</strong> 条记录，其中 <strong>1,294</strong> 首可参与听歌题。宴会場（utage）谱面与通常曲目共用音源、没有独立音频，因此不参与听歌题。</p>
+          <p>曲目数据与游戏资源来自 <a href="https://maimai.lxns.net/" target="_blank" rel="noopener noreferrer">LXNS 公共曲库</a>。本作是非官方粉丝作品，仅供学习交流。</p>
+        </section>
+        <section>
+          <h3><span>05</span>全服总榜</h3>
+          <p>完成单人挑战后，成绩会按每位玩家的最佳成绩记录在全服总榜；如果当前无法连接，成绩会保留在这台设备上。</p>
+        </section>
+        <section>
+          <h3><span>06</span>联机对战</h3>
+          <p>进入「联机对战」创建房间（2–8 人），或输入 4 位房间码加入。房主开始后，所有人会收到同一道题、同一段随机裁切音频和同一个倒计时；全房统一判分。</p>
+          <p>准备后等待房主开始；答得越快速度分越高。断线后 5 分钟内可以重连回原房间。</p>
+        </section>
+        <section>
+          <h3><span>07</span>快捷键</h3>
+          <p><kbd>1</kbd>–<kbd>4</kbd> 选择答案 · <kbd>R</kbd> 换一段重听 · <kbd>Esc</kbd> 退出游戏。</p>
+        </section>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="button" data-close="helpModal">知道了</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-layer modal-layer-sm" id="exitModal" hidden>
+    <div class="modal-backdrop" data-close="exitModal"></div>
+    <div class="modal-card modal-confirm" role="dialog" aria-modal="true" aria-labelledby="exitTitle">
+      <h2 id="exitTitle">要结束这局吗？</h2>
+      <p class="modal-sub">当前进度不会保存，已完成的题目也不会计入榜单。</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" type="button" data-close="exitModal">继续游戏</button>
+        <button class="btn btn-danger" id="confirmExitBtn" type="button">结束本局</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-layer" id="shareModal" hidden>
+    <div class="modal-backdrop" data-close="shareModal"></div>
+    <div class="modal-card modal-share" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+      <button class="modal-close" type="button" data-close="shareModal" aria-label="关闭"><svg><use href="#i-close"></use></svg></button>
+      <span class="eyebrow">SHARE CARD</span>
+      <h2 id="shareTitle">结算卡已生成</h2>
+      <div class="share-preview"><img id="sharePreview" alt="结算卡预览" /></div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" type="button" data-close="shareModal">关闭</button>
+        <button class="btn btn-primary" id="downloadCardBtn" type="button"><svg><use href="#i-download"></use></svg>保存图片</button>
+      </div>
+      <p class="share-tip">手机端长按图片也可以保存。</p>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+  <canvas id="shareCanvas" width="1080" height="1350" hidden></canvas>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/audio.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
