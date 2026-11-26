@@ -174,7 +174,6 @@ POST 示例：
 完整迁移说明、D1 / Durable Object 适配、部署与验收清单见：
 
 - **[docs/cloudflare-workers-migration.md](docs/cloudflare-workers-migration.md)**
-- 上传 GitHub：[docs/github-publish.md](docs/github-publish.md)
 
 简要流程：
 
